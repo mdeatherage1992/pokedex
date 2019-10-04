@@ -1,0 +1,64 @@
+<head>
+<style>#dttb{width: 90%; position: relative; left: 100px;}</style>
+<script>
+$(document).ready(function() {
+  var table = $("#dttb").DataTable();
+  debugger;
+  table.columns().every(function () {
+    var that = this;
+    $( 'input', this.footer() ).on('keyup change', function () {
+        if ( that.search() !== this.value ) {
+            that
+                .search( this.value )
+                .draw();
+        }
+    } );
+} );
+});
+</script>
+</head>
+<h1>Pokedex</h1>
+
+<table class="table" id="dttb">
+<thead>
+<tr>
+<th>Name</th>
+<th>HP</th>
+<th>Attack</th>
+<th>Defense</th>
+<th>Special Attack</th>
+<th>Special Defense</th>
+<th>Speed</th>
+<th>Type(s)</th>
+</tr>
+</thead>
+<tbody>
+<% @pokes.each do |x| %>
+<tr>
+  <td><%= link_to x.english_name, pokemon_path(x.id) %></td>
+  <td><%= x.hp %></td>
+  <td><%= x.attack %></td>
+  <td><%= x.defense %></td>
+  <td><%= x.sp_attack %></td>
+  <td><%= x.sp_defense %></td>
+  <td><%= x.speed %></td>
+  <% r = PokemonType.select {|y| y.pokemon_id == x.id } %>
+  <td>
+  <% r.each do |q| %>
+    <%= PokeType.find(q.poke_type_id).english_name %>
+  <% end %>
+  </td>
+</tr>
+<% end %>
+</tbody>
+<tfoot>
+  <th type="text"><input class="form-control" type="text"></input></th>
+  <th type="text"><input class="form-control"type="text"></input></th>
+  <th type="text"><input class="form-control"type="text"></input></th>
+  <th type="text"><input class="form-control"type="text"></input></th>
+  <th type="text"><input class="form-control"type="text"></input></th>
+  <th type="text"><input class="form-control" type="text"></input></th>
+  <th type="text"><input class="form-control"type="text"></input></th>
+  <th type="text"><input class="form-control"type="text"></input></th>
+</tfoot>
+</table>
