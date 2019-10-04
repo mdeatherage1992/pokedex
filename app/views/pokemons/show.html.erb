@@ -1,2 +1,75 @@
-
+<head>
+<script>
+$(document).ready(function() {
+  var table = $("#dttb").DataTable();
+  debugger;
+  table.columns().every(function () {
+    var that = this;
+    $( 'input', this.footer() ).on('keyup change', function () {
+        if ( that.search() !== this.value ) {
+            that
+                .search( this.value )
+                .draw();
+        }
+    } );
+} );
+});
+</script>
+</head>
+<center>
 <%= image_tag url_for @poke.picture %>
+<h4>English Name: <%= @poke.english_name %> | Japanese Name: <%= @poke.japanese_name %> | Chinese Name: <%= @poke.chinese_name %></h4>
+<table class="table"style="width: 60%;">
+<thead>
+<tr>
+<th>HP</th>
+<th>Attack</th>
+<th>Defense</th>
+<th>Special Attack</th>
+<th>Special Defense</th>
+<th>Speed</th>
+<th>Type(s)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><%= @poke.hp %></td>
+  <td><%= @poke.attack %></td>
+  <td><%= @poke.defense %></td>
+  <td><%= @poke.sp_attack %></td>
+  <td><%= @poke.sp_defense %></td>
+  <td><%= @poke.speed %></td>
+  <% r = PokemonType.select {|y| y.pokemon_id == @poke.id } %>
+  <td>
+  <% r.each do |q| %>
+    <%= PokeType.find(q.poke_type_id).english_name %>
+    <% end %>
+  </td>
+</tr>
+</tbody>
+</table>
+<h1>Available Moves</h1>
+<table id="dttb" style="width: 70%;"class="table">
+<thead>
+<tr>
+<th>Name</th>
+<th>PP</th>
+<th>Power</th>
+<th>Accuracy</th>
+<th>Move Type</th>
+</tr>
+</thead>
+<tbody>
+<% @moves.each do |x| %>
+<tr>
+  <td><%= x.name %></td>
+  <td><%= x.pp %></td>
+  <td><%= x.accuracy %></td>
+  <td><%= x.power %></td>
+  <td><%= x.move_type%></td>
+</tr>
+<% end %>
+</tbody>
+</table>
+
+</center>
